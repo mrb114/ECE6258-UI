@@ -1,0 +1,10 @@
+
+#main_photo {
+	min-height: 500px;
+	min-width: 500px;
+	background-color: #4dbfe2;
+}
+
+.card-img-top {
+	min-height: 100px;
+}
