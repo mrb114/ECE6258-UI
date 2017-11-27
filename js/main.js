@@ -50,6 +50,13 @@ $('.background-option button').on('click', function () {
 $('.background-box').on('click', function(){
 	face_id = $(this).attr('id');
 	console.log('clicked');
+	$.get('http://localhost:8000/select/face/'+face_id, function(response){
+		$.ajax({
+			url: 'http://localhost:8000/select/face'+face_id,
+			type: 'POST',
+			data: face_id
+		});
+	});
 
 });
 
@@ -68,10 +75,14 @@ $('.select-option button').on('click', function(){
 	$.get("http://localhost:8000/backgroundimage", function (response) {
 	    
 	    $.ajax({
-	    url: "http://localhost:8000/select?face=" + face_selection,
-	    type: 'PUT',
+	    url: "http://localhost:8000/select/face/" + face_selection,
+	    type: 'POST',
+	    data: face_selection;
 	    success: function (response) {
-	      
+	      console.log(response)
+	    },
+	    error function(error){
+	    	console.log(error)
 	    }
 		});
 	    $("#main_photo") = response.main_photo;
@@ -98,13 +109,17 @@ $("#upload").on('click', function(){
 	setTimeout(function(){
     $.LoadingOverlay("hide");
 }, 3000);
-	$.get("http://localhost:8000/backgroundimage", function (response) {
+	$.get('http://localhost:8000/select/image/', function (response) {
     
     $.ajax({
-    url: "http://localhost:8000/upload?image=" + upload_url,
-    type: 'PUT',
+    url: 'http://localhost:8000/upload'
+    data: upload_url;
+    type: 'POST',
     success: function (response) {
-      
+      console.log(response);
+    },
+    error: function(error){
+    	console.log(error)
     }
 });
     background_images = response;
@@ -127,5 +142,39 @@ $("#export").on('click', function(){
     $.LoadingOverlay("hide");
 
 }, 1000);
-	
+
+});
+function showPreview(objFileInput) {
+    if (objFileInput.files[0]) {
+        var fileReader = new FileReader();
+        fileReader.onload = function (e) {
+            $('#blah').attr('src', e.target.result);
+			$("#targetLayer").html('<img src="'+e.target.result+'" width="200px" height="200px" class="upload-preview" />');
+			$("#targetLayer").css('opacity','0.7');
+			$(".icon-choose-image").css('opacity','0.5');
+        }
+		fileReader.readAsDataURL(objFileInput.files[0]);
+    }
+}
+$(document).ready(function (e) {
+	$("#uploadForm").on('submit',(function(e) {
+		e.preventDefault();
+		$.ajax({
+        	url: "upload.php",
+			type: "POST",
+			data:  new FormData(this),
+			beforeSend: function(){$("#body-overlay").show();},
+			contentType: false,
+    	    processData:false,
+			success: function(data)
+		    {
+			$("#targetLayer").html(data);
+			$("#targetLayer").css('opacity','1');
+			setInterval(function() {$("#body-overlay").hide(); },500);
+			},
+		  	error: function() 
+	    	{
+	    	} 	        
+	   });
+	}));
 });

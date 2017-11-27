@@ -24,7 +24,18 @@
         <nav class="navbar navbar-light bg-light">
             <a class="navbar-brand">FaceSwapper 2000</a>
             <div class="justify-content-end">
-                <a class="btn btn-outline-primary" id="upload" href="#">Upload</a>
+                <form id="uploadForm"  method="post">
+                        <div id="targetOuter">
+                            <div id="targetLayer"></div>
+                            <img src="photo.png"  class="icon-choose-image" />
+                            <div class="icon-choose-image" >
+                            <input name="userImage" id="userImage" type="file" class="inputFile" onChange="showPreview(this);" />
+                            </div>
+                        </div>
+                        <div>
+                            <input type="submit" value="Submit" class="btnSubmit" />
+                        </div>
+                    </form>
                 <a class="btn btn-outline-secondary" id="export" href="#">Export</a>
             </div>
             
@@ -78,21 +89,21 @@
                     </div>
                 </div>
                 <div class="card background-option">
-                    <img class="card-img-top" src="http://cdn1-www.dogtime.com/assets/uploads/gallery/30-impossibly-cute-puppies/impossibly-cute-puppy-3.jpg" alt="Card image cap">
+                    <img class="card-img-top" src="http://cdn1-www.dogtime.com/assets/uploads/gallery/30-impossibly-cute-puppies/impossibly-cute-puppy-3.jpg" alt="Card image cap" id="option2">
                     <div class="card-body"></div>
                     <div class="card-footer text-center">
                         <button type="button" class="btn btn-outline-info">Select Background</button>
                     </div>
                 </div>
                 <div class="card background-option">
-                    <img class="card-img-top" src="http://cdn1-www.dogtime.com/assets/uploads/gallery/30-impossibly-cute-puppies/impossibly-cute-puppy-1.jpg" alt="Card image cap">
+                    <img class="card-img-top" src="http://cdn1-www.dogtime.com/assets/uploads/gallery/30-impossibly-cute-puppies/impossibly-cute-puppy-1.jpg" alt="Card image cap" id="option3">
                     <div class="card-body"></div>
                     <div class="card-footer text-center align-text-bottom">
                         <button type="button" class="btn btn-outline-info">Select Background</button>
                     </div>
                 </div>
                 <div class="card background-option">
-                    <img class="card-img-top" src="http://cdn1-www.dogtime.com/assets/uploads/gallery/30-impossibly-cute-puppies/impossibly-cute-puppy-22.jpg" alt="Card image cap">
+                    <img class="card-img-top" src="http://cdn1-www.dogtime.com/assets/uploads/gallery/30-impossibly-cute-puppies/impossibly-cute-puppy-22.jpg" alt="Card image cap" id="option4">
                     <div class="card-body"></div>
                     <div class="card-footer text-center">
                         <button type="button" class="btn btn-outline-info">Select Background</button>
