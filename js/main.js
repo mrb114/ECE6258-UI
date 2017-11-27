@@ -5,12 +5,43 @@
 // });
 
 var background_clicked = false;
-
+var background_image_id;
+var face_selection = [];
+var background_images = [];
+var upload_url;
 $('.background-option button').on('click', function () { 
+	if($('#option1').data('clicked')) {
+    	background_image_id=1;
+    }
+    else if($('#option2').data('clicked')){
+    	background_image_id=2;
+    }
+    else if($('#option3').data('clicked')){
+    	background_image_id=3;
+    }
+    else{
+    	background_image_id=4;
+    }
+}
 	console.log('clicked');
     var that = $(this);
     var img = that.parent().parent().find('img').clone(); 
-    $("#main_photo").html(img);
+    
+    $.get("http://localhost:8000/selectimage", function (response) {
+    	$.ajax({
+    		url: "http://localhost:8000/background?imageid=" + background_image_id
+    		type: 'PUT',
+    		success: function (response) {
+      			
+    		}
+});
+    $("#main_photo").html(response.main_photo);
+    $("#face-1").html(response.faces.get(1));
+    $("#face-2").html(response.faces.get(2));
+    $("#face-3").html(response.faces.get(3));
+    $("#face-4").html(response.faces.get(4));
+    
+});
     background_clicked = true;
 });
 $('.select-option button').on('click', function(){
@@ -19,10 +50,11 @@ $('.select-option button').on('click', function(){
 	var that = $(this);
 	var face = that.parent().parent().find('img').clone();
 	//TODO: make call to backend to replace face here
+
 	$("#main_photo").html(face);
 }
 else{
-	
+	$(this).attr('disabled');
 }
 });
 $("#upload").on('click', function(){
@@ -31,6 +63,25 @@ $("#upload").on('click', function(){
 	setTimeout(function(){
     $.LoadingOverlay("hide");
 }, 3000);
+	$.get("http://localhost:8000/backgroundimage", function (response) {
+    
+    $.ajax({
+    url: "http://localhost:8000/upload?image=" + upload_url,
+    type: 'PUT',
+    success: function (response) {
+      
+    }
+});
+    background_images = response;
+    var imagecount = 1;
+    for(img in background_images){
+    	var image_id = "#option"+imagecount;
+    	$(image_id).html(img);
+    }
+
+
+    
+});
 });
 
 $("#export").on('click', function(){
