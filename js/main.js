@@ -9,6 +9,7 @@ var background_image_id;
 var face_selection = [];
 var background_images = [];
 var upload_url;
+var face_id;
 $('.background-option button').on('click', function () { 
 	if($('#option1').data('clicked')) {
     	background_image_id=1;
@@ -44,19 +45,53 @@ $('.background-option button').on('click', function () {
 });
     background_clicked = true;
 });
+
+
+$('.background-box').on('click', function(){
+	face_id = $(this).attr('id');
+	console.log('clicked');
+
+});
+
+
 $('.select-option button').on('click', function(){
 	if(background_clicked == true){
 	console.log('clicked');
 	var that = $(this);
 	var face = that.parent().parent().find('img').clone();
+	var image_id = that.attr('id');
+	face_selection.push({
+		key: face_id,
+		value: image_id
+	})
 	//TODO: make call to backend to replace face here
+	$.get("http://localhost:8000/backgroundimage", function (response) {
+	    
+	    $.ajax({
+	    url: "http://localhost:8000/select?face=" + face_selection,
+	    type: 'PUT',
+	    success: function (response) {
+	      
+	    }
+		});
+	    $("#main_photo") = response.main_photo;
+	    var imagecount = 1;
+	    	for(img in background_images){
+	    		var image_id = "#option"+imagecount;
+	    		$(image_id).html(response.faces(imagecount));
+	    		imagecount++;
+	    	}
 
-	$("#main_photo").html(face);
+
+	    
+	});
 }
 else{
 	$(this).attr('disabled');
 }
 });
+
+
 $("#upload").on('click', function(){
 	$.LoadingOverlay("show");
 
@@ -77,6 +112,7 @@ $("#upload").on('click', function(){
     for(img in background_images){
     	var image_id = "#option"+imagecount;
     	$(image_id).html(img);
+    	imagecount++;
     }
 
 
@@ -91,4 +127,5 @@ $("#export").on('click', function(){
     $.LoadingOverlay("hide");
 
 }, 1000);
+	
 });
