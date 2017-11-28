@@ -1,4 +1,3 @@
-
 // $("#choose1").click(function() {
 //     var $img = $("#option1").clone();
 //     $("#main_photo").html($img);
@@ -103,28 +102,26 @@ else{
 });
 
 
-$("#upload").on('click', function(){
+$("#uploadForm").on('submit', function(){
 	$.LoadingOverlay("show");
 
-	setTimeout(function(){
-    $.LoadingOverlay("hide");
-}, 3000);
     $.ajax({
     	url: 'http://localhost:8000/upload',
     	data: upload_url,
     	type: 'POST',
+    	data:  new FormData(this),
+        contentType: false,
+        processData:false, 
     	success: function (response) {
       		console.log(response);
+      		var uploaded_image = response.image_id;
+    		$("#"+uploaded_image).html(data); 
     		$.LoadingOverlay("hide");
     	},
     	error: function(error){
     		console.log(error)
-    }
-});
-    var uploaded_image = response.image_id;
-    $("#"+uploaded_image).html(data);
-    
-    }   
+    	}
+	});
 });
 
 
@@ -138,28 +135,3 @@ $("#export").on('click', function(){
 
 });
 
-$(document).ready(function (e) {
-	$("#uploadForm").on('submit',(function(e) {
-		e.preventDefault();
-		data = new FormData(this);
-		$("#main_photo").html(data);
-		$.ajax({
-        	url: "http://localhost:8000/upload",
-			type: "POST",
-			data:  new FormData(this),
-			contentType: false,
-    	    processData:false,
-			success: function(data)
-		    {
-		    	console.log(data);
-			$("#main_photo").html(data);
-			},
-		  	error: function(error) 
-	    	{
-	    		console.log(error);
-	    	} 	        
-	   });
-		
-
-	}));
-});
