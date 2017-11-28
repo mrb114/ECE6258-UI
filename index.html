@@ -24,10 +24,10 @@
         <nav class="navbar navbar-light bg-light">
             <a class="navbar-brand">FaceSwapper 2000</a>
             <div class="justify-content-end">
-                <form id="uploadForm"  method="post">
+                <form id="uploadForm"  method="post" enctype="multipart/form-data">
                         <div id="targetOuter">
                             <div class="icon-choose-image" >
-                            <input name="userImage" id="userImage" type="file" class="inputFile" />
+                            <input name="file" type="file" />
                             </div>
                         </div>
                         <div>
@@ -80,28 +80,29 @@
         <div class="container">
             <div class="card-deck">
                 <div class="card background-option">
-                    <img class="card-img-top"  alt="Card image cap" id="image_id0">
+                    <img class="card-img-top"  alt="Load Image" id="image_id0">
+                    
                     <div class="card-body"></div>
                     <div class="card-footer text-center align-text-bottom">
                         <button type="button" class="btn btn-outline-info" id="choose1">Select Background</button>
                     </div>
                 </div>
                 <div class="card background-option">
-                    <img class="card-img-top" alt="Card image cap" id="image_id1">
+                    <img class="card-img-top" alt="Load Image" id="image_id1">
                     <div class="card-body"></div>
                     <div class="card-footer text-center">
                         <button type="button" class="btn btn-outline-info">Select Background</button>
                     </div>
                 </div>
                 <div class="card background-option">
-                    <img class="card-img-top" alt="Card image cap" id="image_id2">
+                    <img class="card-img-top" alt="Load Image" id="image_id2">
                     <div class="card-body"></div>
                     <div class="card-footer text-center align-text-bottom">
                         <button type="button" class="btn btn-outline-info">Select Background</button>
                     </div>
                 </div>
                 <div class="card background-option">
-                    <img class="card-img-top" alt="Card image cap" id="image_id3">
+                    <img class="card-img-top" alt="Load Image" id="image_id3">
                     <div class="card-body"></div>
                     <div class="card-footer text-center">
                         <button type="button" class="btn btn-outline-info">Select Background</button>
