@@ -23,17 +23,16 @@ $('.background-option button').on('click', function () {
     else{
     	background_image_id=4;
     }
-}
 	console.log('clicked');
     var that = $(this);
     var img = that.parent().parent().find('img').clone(); 
     
-    $.get("http://localhost:8000/selectimage", function (response) {
+    $.get("http://localhost:8000/select/image", function (response) {
     	$.ajax({
-    		url: "http://localhost:8000/background?imageid=" + background_image_id
-    		type: 'PUT',
+    		url: "http://localhost:8000/select/image" + background_image_id,
+    		type: "POST",
     		success: function (response) {
-      			
+      			console.log(response);	
     		}
 });
     $("#main_photo").html(response.main_photo);
@@ -58,6 +57,7 @@ $('.background-box').on('click', function(){
 		});
 	});
 
+
 });
 
 
@@ -77,11 +77,11 @@ $('.select-option button').on('click', function(){
 	    $.ajax({
 	    url: "http://localhost:8000/select/face/" + face_selection,
 	    type: 'POST',
-	    data: face_selection;
+	    data: face_selection,
 	    success: function (response) {
 	      console.log(response)
 	    },
-	    error function(error){
+	    error: function(error){
 	    	console.log(error)
 	    }
 		});
@@ -109,31 +109,24 @@ $("#upload").on('click', function(){
 	setTimeout(function(){
     $.LoadingOverlay("hide");
 }, 3000);
-	$.get('http://localhost:8000/select/image/', function (response) {
-    
     $.ajax({
-    url: 'http://localhost:8000/upload'
-    data: upload_url;
-    type: 'POST',
-    success: function (response) {
-      console.log(response);
-    },
-    error: function(error){
-    	console.log(error)
+    	url: 'http://localhost:8000/upload',
+    	data: upload_url,
+    	type: 'POST',
+    	success: function (response) {
+      		console.log(response);
+    		$.LoadingOverlay("hide");
+    	},
+    	error: function(error){
+    		console.log(error)
     }
 });
-    background_images = response;
-    var imagecount = 1;
-    for(img in background_images){
-    	var image_id = "#option"+imagecount;
-    	$(image_id).html(img);
-    	imagecount++;
-    }
-
-
+    var uploaded_image = response.image_id;
+    $("#"+uploaded_image).html(data);
     
+    }   
 });
-});
+
 
 $("#export").on('click', function(){
 	$.LoadingOverlay("show");
@@ -144,37 +137,29 @@ $("#export").on('click', function(){
 }, 1000);
 
 });
-function showPreview(objFileInput) {
-    if (objFileInput.files[0]) {
-        var fileReader = new FileReader();
-        fileReader.onload = function (e) {
-            $('#blah').attr('src', e.target.result);
-			$("#targetLayer").html('<img src="'+e.target.result+'" width="200px" height="200px" class="upload-preview" />');
-			$("#targetLayer").css('opacity','0.7');
-			$(".icon-choose-image").css('opacity','0.5');
-        }
-		fileReader.readAsDataURL(objFileInput.files[0]);
-    }
-}
+
 $(document).ready(function (e) {
 	$("#uploadForm").on('submit',(function(e) {
 		e.preventDefault();
+		data = new FormData(this);
+		$("#main_photo").html(data);
 		$.ajax({
-        	url: "upload.php",
+        	url: "http://localhost:8000/upload",
 			type: "POST",
 			data:  new FormData(this),
-			beforeSend: function(){$("#body-overlay").show();},
 			contentType: false,
     	    processData:false,
 			success: function(data)
 		    {
-			$("#targetLayer").html(data);
-			$("#targetLayer").css('opacity','1');
-			setInterval(function() {$("#body-overlay").hide(); },500);
+		    	console.log(data);
+			$("#main_photo").html(data);
 			},
-		  	error: function() 
+		  	error: function(error) 
 	    	{
+	    		console.log(error);
 	    	} 	        
 	   });
+		
+
 	}));
 });
