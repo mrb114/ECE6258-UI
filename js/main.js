@@ -134,4 +134,7 @@ $("#export").on('click', function(){
 }, 1000);
 
 });
+<<<<<<< HEAD
 
+=======
+>>>>>>> origin/master
