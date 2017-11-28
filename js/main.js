@@ -2,13 +2,16 @@
 //     var $img = $("#option1").clone();
 //     $("#main_photo").html($img);
 // });
-
+//yours
 var background_clicked = false;
 var background_image_id;
 var face_selection = [];
 var background_images = [];
 var upload_url;
 var face_id;
+//mine
+var selected_img_dims; 
+var face_boxes; 
 $('.background-option button').on('click', function() {
     console.log('clicked');
     var that = $(this);
@@ -20,18 +23,46 @@ $('.background-option button').on('click', function() {
     $.get("http://localhost:8000/select/image/" + img_id, function(response) {
         var data = $.parseJSON(response);
         console.log(data);
-
+        selected_img_dims = data['img_dims']; 
+        face_boxes = data['faces']; 
         $("#main_photo").html('<img src=' + data['boxed_faces'] +'>');
-
-        /*$("#face-1").html(response.faces.get(1));
-        $("#face-2").html(response.faces.get(2));
-        $("#face-3").html(response.faces.get(3));
-        $("#face-4").html(response.faces.get(4));*/
-
     });
-    background_clicked = true;
 });
 
+$( window ).resize(function() {
+  if(selected_img_dims && face_boxes){
+  	var curr_width = $("#main_photo").width(); 
+  	var curr_height = $("#main_photo").height();
+  	$.each(face_boxes, function(face_id, dims) {
+    	var y = dims[0];
+    	var x = dims[1];
+    	var w = dims[2];
+    	var h = dims[3];
+    	scaled_width = curr_width / selected_img_dims[1]; 
+    	scaled_height = curr_height / selected_img_dims[0]; 
+    	scaled_x = Math.floor(x*scaled_width); 
+    	scaled_y = Math.floor(y*scaled_height); 
+    	scaled_w = Math.floor(w*scaled_width); 
+    	scaled_h = Math.floor(h*scaled_height); 
+    	var box = $("<div>", {id: face_id, "class": "main_photo_faces"});
+		$("#main_photo").append(box);	
+    	box.height(scaled_h);
+    	box.width(scaled_w);
+    	box.parent().css({position: 'relative'});
+		box.css({top: scaled_x, left: scaled_y, position:'absolute'});
+
+    	
+	});
+  }
+  
+  
+});
+
+// get the true image width
+// get the current parent conainer width
+// find the relative ratio
+// modify coordinates with that ratio
+// draw box at new coordinates
 
 $('.background-box').on('click', function() {
     face_id = $(this).attr('id');

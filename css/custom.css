@@ -12,3 +12,8 @@
 .card-img-top {
 	min-height: 100px;
 }
+
+.main_photo_faces {
+	border:solid 3px yellow;
+	z-index: 20; 
+}
