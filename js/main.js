@@ -24,39 +24,45 @@ $('.background-option button').on('click', function() {
         var data = $.parseJSON(response);
         console.log(data);
         selected_img_dims = data['img_dims']; 
-        face_boxes = data['faces']; 
+        face_boxes = data['faces'];
         $("#main_photo").html('<img src=' + data['boxed_faces'] +'>');
+        setTimeout(function() {
+		    resize_box();
+		}, 25);
     });
 });
 
 $( window ).resize(function() {
   if(selected_img_dims && face_boxes){
-  	var curr_width = $("#main_photo").width(); 
-  	var curr_height = $("#main_photo").height();
+  	resize_box();
+  }
+});
+
+function resize_box() {
+	var curr_width = $("#main_photo img").width(); 
+  	var curr_height = $("#main_photo img").height();
   	$.each(face_boxes, function(face_id, dims) {
     	var y = dims[0];
     	var x = dims[1];
-    	var w = dims[2];
-    	var h = dims[3];
+    	var h = dims[2];
+    	var w = dims[3];
     	scaled_width = curr_width / selected_img_dims[1]; 
     	scaled_height = curr_height / selected_img_dims[0]; 
     	scaled_x = Math.floor(x*scaled_width); 
     	scaled_y = Math.floor(y*scaled_height); 
     	scaled_w = Math.floor(w*scaled_width); 
     	scaled_h = Math.floor(h*scaled_height); 
-    	var box = $("<div>", {id: face_id, "class": "main_photo_faces"});
+    	var box = $("#"+face_id);
+    	if(!box.length){
+    		box = $("<div>", {id: face_id, "class": "main_photo_faces"});
+    	}
 		$("#main_photo").append(box);	
     	box.height(scaled_h);
     	box.width(scaled_w);
     	box.parent().css({position: 'relative'});
 		box.css({top: scaled_x, left: scaled_y, position:'absolute'});
-
-    	
 	});
-  }
-  
-  
-});
+}
 
 // get the true image width
 // get the current parent conainer width
