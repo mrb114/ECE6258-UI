@@ -12,17 +12,21 @@ var face_id;
 //mine
 var selected_img_dims; 
 var face_boxes; 
+
+$(document).ready(function() {
+	$.get("http://localhost:8000/restart", function(response) {
+		console.log('restarted backend');
+	}); 
+}); 
+
 $('.background-option button').on('click', function() {
-    console.log('clicked');
     var that = $(this);
     var img_id = that.parent().parent().find('img').attr('id');
-    console.log(img_id)
     var img = that.parent().parent().find('img').clone();
-    console.log(img)
 
     $.get("http://localhost:8000/select/image/" + img_id, function(response) {
         var data = $.parseJSON(response);
-        console.log(data);
+        console.log(data); 
         selected_img_dims = data['img_dims']; 
         face_boxes = data['faces'];
         $("#main_photo").html('<img src=' + data['boxed_faces'] +'>');
@@ -64,67 +68,47 @@ function resize_box() {
 	});
 }
 
-// get the true image width
-// get the current parent conainer width
-// find the relative ratio
-// modify coordinates with that ratio
-// draw box at new coordinates
-
-$('.background-box').on('click', function() {
-    face_id = $(this).attr('id');
-    console.log('clicked');
-    $.get('http://localhost:8000/select/face/' + face_id, function(response) {
-        $.ajax({
-            url: 'http://localhost:8000/select/face' + face_id,
-            type: 'POST',
-            data: face_id
+$('#main_photo').on('click', '.main_photo_faces', function(){
+	face_id = $(this).attr('id');
+	$.get('http://localhost:8000/select/face/' + face_id, function(response) {
+		var data = $.parseJSON(response);
+		console.log(data); 
+        var image_ids = Object.keys(data); 
+        var count = 0; 
+        $('.select-option').each(function(i, obj) {
+        	var img = $(this).find('img'); 
+        	img.removeAttr('src'); 
+        	if(count >= image_ids.length){
+            	return true; 
+            }
+        	image_id = image_ids[count]; 
+            img.attr('id', image_id + '-' + face_id);
+            img.attr('src', data[image_id]);
+            count++;
         });
-    });
-
-
+	});
 });
-
 
 $('.select-option button').on('click', function() {
-    if (background_clicked == true) {
-        console.log('clicked');
-        var that = $(this);
-        var face = that.parent().parent().find('img').clone();
-        var image_id = that.attr('id');
-        face_selection.push({
-                key: face_id,
-                value: image_id
-            })
-            //TODO: make call to backend to replace face here
-        $.get("http://localhost:8000/backgroundimage", function(response) {
-
-            $.ajax({
-                url: "http://localhost:8000/select/face/" + face_selection,
-                type: 'POST',
-                data: face_selection,
-                success: function(response) {
-                    console.log(response)
-                },
-                error: function(error) {
-                    console.log(error)
-                }
-            });
-            $("#main_photo") = response.main_photo;
-            var imagecount = 1;
-            for (img in background_images) {
-                var image_id = "#option" + imagecount;
-                $(image_id).html(response.faces(imagecount));
-                imagecount++;
-            }
+	$.LoadingOverlay("show");
+	var that = $(this); 
+	var img_face_id = that.parent().parent().find('img').attr('id').split('-'); 
+	var img_id = img_face_id[0]; 
+	var face_id = img_face_id[1]; 
+	$.get('http://localhost:8000/swap/' + img_id + '/' + face_id, function(response) {
+		var data = $.parseJSON(response); 
+		$("#main_photo").html('<img src=' + data['result'] +'>');
+		setTimeout(function() {
+		    resize_box();
+		}, 25);
+		$.LoadingOverlay("hide");
+	}); 
+}); 
 
 
-
-        });
-    } else {
-        $(this).attr('disabled');
-    }
-});
-
+$('input[type=file]').change(function() {
+	$('#uploadForm').submit(); 
+}); 
 
 $("#uploadForm").on('submit', function(ev) {
     ev.preventDefault();
@@ -139,10 +123,8 @@ $("#uploadForm").on('submit', function(ev) {
         processData: false,
         success: function(response) {
             var data = $.parseJSON(response);
-            console.log(data);
             var uploaded_image = data['image_id'];
             var image_url = data['image_url'];
-            //$("#"+uploaded_image).html('<img class="card-img-top"  alt="Load Image" src="'+ image_url +'">'); 
             $("#" + uploaded_image).attr('src', image_url);
             $.LoadingOverlay("hide");
         },
@@ -155,10 +137,10 @@ $("#uploadForm").on('submit', function(ev) {
 
 $("#export").on('click', function() {
     $.LoadingOverlay("show");
-
-    setTimeout(function() {
-        $.LoadingOverlay("hide");
-
-    }, 1000);
-
+    var img_url = $("#main_photo").find('img').attr('src');
+    console.log(img_url);
+    var anchor = $("<a>", {"href":img_url, "download": "face_swapper_result.jpg"});
+    console.log(anchor); 
+    anchor[0].click(); 
+    $.LoadingOverlay("hide");
 });

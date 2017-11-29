@@ -25,15 +25,11 @@
             <a class="navbar-brand">FaceSwapper 2000</a>
             <div class="justify-content-end">
                 <form id="uploadForm"  method="post" enctype="multipart/form-data">
-                        <div id="targetOuter">
-                            <div class="icon-choose-image" >
-                            <input name="file" type="file" />
-                            </div>
-                        </div>
-                        <div>
-                            <input type="submit" value="Submit" class="btnSubmit" />
-                        </div>
-                    </form>
+                    <label class="btn btn-outline-secondary" >
+                        Upload<input name="file" type="file" hidden>
+                    </label>
+                    <input type="submit" value="Submit" class="btn btn-outline-secondary" hidden/>
+                </form>
                 <a class="btn btn-outline-secondary" id="export" href="#">Export</a>
             </div>
             
@@ -45,28 +41,28 @@
             <div class="container">
                 <div class="card-deck">
                     <div class="card select-option">
-                        <img class="card-img-top" id="image_id_face_id0" alt="Card image cap">
+                        <img class="card-img-top" id="image_id_face_id0" alt="Face Option">
                         <div class="card-body"></div>
                         <div class="card-footer text-center align-middle"">
                             <button type="button" id="select_1" class="btn btn-outline-info">Select Face</button>
                         </div>
                     </div>
                     <div class="card select-option">
-                        <img class="card-img-top" id="image_id_face_id1" alt="Card image cap">
+                        <img class="card-img-top" id="image_id_face_id1" alt="Face Option">
                         <div class="card-body"></div>
                         <div class="card-footer text-center">
                             <button type="button" id="select_2" class="btn btn-outline-info">Select Face</button>
                         </div>
                     </div>
                     <div class="card select-option">
-                        <img class="card-img-top" id="image_id_face_id2" src="https://i1.wp.com/www.papertraildesign.com/wp-content/uploads/2017/06/emoji-nerd-glasses.png" alt="Card image cap">
+                        <img class="card-img-top" id="image_id_face_id2" alt="Face Option">
                         <div class="card-body"></div>
                         <div class="card-footer text-center">
                             <button type="button" id="select_3" class="btn btn-outline-info">Select Face</button>
                         </div>
                     </div>
                     <div class="card select-option">
-                        <img class="card-img-top" id="image_id_face_id3" src="https://www.thesun.co.uk/wp-content/uploads/2016/03/2423749.main_image.jpg?strip=all" alt="Card image cap">
+                        <img class="card-img-top" id="image_id_face_id3" alt="Face Option">
                         <div class="card-body"></div>
                         <div class="card-footer text-center">
                             <button type="button" id="select_4" class="btn btn-outline-info">Select Face</button>
@@ -107,12 +103,10 @@
                     <div class="card-footer text-center">
                         <button type="button" class="btn btn-outline-info">Select Background</button>
                     </div>
-
                 </div>
             </div>
         </div>
     </div>
-
     <footer class="text-muted">
         <div class="container">
             <p class="float-right">
