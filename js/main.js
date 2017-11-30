@@ -14,6 +14,7 @@ var selected_img_dims;
 var face_boxes; 
 
 $(document).ready(function() {
+	$.ajaxSetup({cache: false}); 
 	$.get("http://localhost:8000/restart", function(response) {
 		console.log('restarted backend');
 	}); 
@@ -29,7 +30,7 @@ $('.background-option button').on('click', function() {
         console.log(data); 
         selected_img_dims = data['img_dims']; 
         face_boxes = data['faces'];
-        $("#main_photo").html('<img src=' + data['boxed_faces'] +'>');
+        $("#main_photo").html('<img src=' + data['boxed_faces'] +'?dummy=' + $.now() + '>');
         setTimeout(function() {
 		    resize_box();
 		}, 25);
@@ -83,7 +84,7 @@ $('#main_photo').on('click', '.main_photo_faces', function(){
             }
         	image_id = image_ids[count]; 
             img.attr('id', image_id + '-' + face_id);
-            img.attr('src', data[image_id]);
+            img.attr('src', data[image_id] +'?dummy=' + $.now());
             count++;
         });
 	});
@@ -97,7 +98,7 @@ $('.select-option button').on('click', function() {
 	var face_id = img_face_id[1]; 
 	$.get('http://localhost:8000/swap/' + img_id + '/' + face_id, function(response) {
 		var data = $.parseJSON(response); 
-		$("#main_photo").html('<img src=' + data['result'] +'>');
+		$("#main_photo").html('<img src=' + data['result'] + '?dummy=' + $.now() +'>');
 		setTimeout(function() {
 		    resize_box();
 		}, 25);
@@ -125,7 +126,7 @@ $("#uploadForm").on('submit', function(ev) {
             var data = $.parseJSON(response);
             var uploaded_image = data['image_id'];
             var image_url = data['image_url'];
-            $("#" + uploaded_image).attr('src', image_url);
+            $("#" + uploaded_image).attr('src', image_url+'?dummy=' + $.now());
             $.LoadingOverlay("hide");
         },
         error: function(error) {
