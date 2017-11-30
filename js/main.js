@@ -33,7 +33,7 @@ $('.background-option button').on('click', function() {
         $("#main_photo").html('<img src=' + data['boxed_faces'] +'?dummy=' + $.now() + '>');
         setTimeout(function() {
 		    resize_box();
-		}, 25);
+		}, 150);
     });
 });
 
@@ -101,7 +101,7 @@ $('.select-option button').on('click', function() {
 		$("#main_photo").html('<img src=' + data['result'] + '?dummy=' + $.now() +'>');
 		setTimeout(function() {
 		    resize_box();
-		}, 25);
+		}, 150);
 		$.LoadingOverlay("hide");
 	}); 
 }); 

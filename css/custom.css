@@ -1,8 +1,10 @@
 
 #main_photo {
-	min-height: 500px;
+	min-height: 250px;
 	min-width: 500px;
 	background-color: #4dbfe2;
+	margin-right: auto;
+	margin-left: auto;
 }
 #main_photo img {
 	max-width: 100%; 
