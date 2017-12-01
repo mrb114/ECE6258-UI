@@ -26,6 +26,11 @@ To run this application, simply open the index.html file from this repository in
 4. This process may be repeated as many times as you like. You may click on a different face in the image for replacement of additional faces or you may restart processing by selecting a different background image. If at any point you would like to restart the Upload phase, just refresh the page. When you are satisfied with your modified image, move on to the Export phase
 
 ### Exporting Images
+
 1. Export your face swapped image by clicking on the "Export" button in the upper right hand corner of the page. 
 2. Your resulting image will be downloaded and you may open it on your computer in the image viewing application of your choice
 3. As described in the image processing step 4, if at any point you would like to start over with a new set of images, just refresh the page or if you would like to restart with a "clean" background image, just select a new background as described in image processing step 1.
+
+## Reproducing Results 
+
+The results demonstrated in the project paper were created using Images that can be found in the Back-end/Images folder. Each image set is in an individual folder. Within each folder there are 2 or more photos that can be uploaded in sequence in the application to reproduce results. Additional images used for testing the application are also provided to allow for additional experimentation with the application. 
