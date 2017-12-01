@@ -1,15 +1,3 @@
-// $("#choose1").click(function() {
-//     var $img = $("#option1").clone();
-//     $("#main_photo").html($img);
-// });
-//yours
-var background_clicked = false;
-var background_image_id;
-var face_selection = [];
-var background_images = [];
-var upload_url;
-var face_id;
-//mine
 var selected_img_dims; 
 var face_boxes; 
 
