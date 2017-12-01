@@ -24,17 +24,18 @@ $('.background-option button').on('click', function() {
     var that = $(this);
     var img_id = that.parent().parent().find('img').attr('id');
     var img = that.parent().parent().find('img').clone();
-
-    $.get("http://localhost:8000/select/image/" + img_id, function(response) {
-        var data = $.parseJSON(response);
-        console.log(data); 
-        selected_img_dims = data['img_dims']; 
-        face_boxes = data['faces'];
-        $("#main_photo").html('<img src=' + data['boxed_faces'] +'?dummy=' + $.now() + '>');
-        setTimeout(function() {
-		    resize_box();
-		}, 150);
-    });
+    if(img.attr('src')){
+	    $.get("http://localhost:8000/select/image/" + img_id, function(response) {
+	        var data = $.parseJSON(response);
+	        console.log(data); 
+	        selected_img_dims = data['img_dims']; 
+	        face_boxes = data['faces'];
+	        $("#main_photo").html('<img src=' + data['boxed_faces'] +'?dummy=' + $.now() + '>');
+	        setTimeout(function() {
+			    resize_box();
+			}, 250);
+	    });
+	}
 });
 
 $( window ).resize(function() {
@@ -91,19 +92,21 @@ $('#main_photo').on('click', '.main_photo_faces', function(){
 });
 
 $('.select-option button').on('click', function() {
-	$.LoadingOverlay("show");
 	var that = $(this); 
 	var img_face_id = that.parent().parent().find('img').attr('id').split('-'); 
 	var img_id = img_face_id[0]; 
 	var face_id = img_face_id[1]; 
-	$.get('http://localhost:8000/swap/' + img_id + '/' + face_id, function(response) {
-		var data = $.parseJSON(response); 
-		$("#main_photo").html('<img src=' + data['result'] + '?dummy=' + $.now() +'>');
-		setTimeout(function() {
-		    resize_box();
-		}, 150);
-		$.LoadingOverlay("hide");
-	}); 
+	if(that.parent().parent().find('img').attr('src')){
+		$.LoadingOverlay("show");
+		$.get('http://localhost:8000/swap/' + img_id + '/' + face_id, function(response) {
+			var data = $.parseJSON(response); 
+			$("#main_photo").html('<img src=' + data['result'] + '?dummy=' + $.now() +'>');
+			setTimeout(function() {
+			    resize_box();
+			}, 250);
+			$.LoadingOverlay("hide");
+		}); 
+	}
 }); 
 
 
